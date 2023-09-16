@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Search Text in Subtitles</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style>
+      /* Add this CSS to style the summary elements */
+      summary {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <h2>Search Text in Subtitles</h2>
+        <form method="POST">
+          <div class="search-container">
+            <input
+              type="text"
+              name="search_text"
+              placeholder="Enter text to search"
+              value="{{search_text}}"
+            />
+            <button type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </header>
+    <main>
+      {% if results %} {% for folder_name, folder_results in results.items() %}
+      <div class="card">
+        <details class="collapsed">
+          <summary>{{ folder_name }}</summary>
+          <div class="card-content">
+            {% for result in folder_results %}
+            <div class="result-item">
+              <h4>{{ result.file_name }}</h4>
+              <h5>{{ result.time_string }}</h5>
+              <p>
+                {% if search_text %} {{ result.snippet | safe }} {% else %}
+                {{ result.snippet }} {% endif %}
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+        </details>
+      </div>
+      {% endfor %} {% endif %}
+    </main>
+
+    <script>
+      // Add JavaScript to toggle the "collapsed" class
+      const detailsElements = document.querySelectorAll("details");
+      detailsElements.forEach((details) => {
+        const summary = details.querySelector("summary");
+        summary.addEventListener("click", () => {
+          details.classList.toggle("collapsed");
+        });
+      });
+    </script>
+  </body>
+</html>
