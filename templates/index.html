@@ -35,15 +35,20 @@
       {% if results %} {% for folder_name, folder_results in results.items() %}
       <div class="card">
         <details class="collapsed">
-          <summary>{{ folder_name }}</summary>
+          <summary>
+            {{ folder_name }}
+            <span style="float: right"
+              >{{ folder_results|length }} Matches</span
+            >
+          </summary>
           <div class="card-content">
             {% for result in folder_results %}
             <div class="result-item">
               <h4>{{ result.file_name }}</h4>
               <h5>{{ result.time_string }}</h5>
               <p>
-                {% if search_text %} {{ result.snippet | safe }} {% else %}
-                {{ result.snippet }} {% endif %}
+                {% if search_text %} {{ result.snippet | safe }} {% else %} {{
+                result.snippet }} {% endif %}
               </p>
             </div>
             {% endfor %}
